@@ -14,11 +14,43 @@ export async function getAuthors() {
 }
 export async function getAuthorById(id) {
   // Query the database and return the author with a matching id or null
+  // Define the SQL query to fetch the book with the specified id from the 'authors' table
+ const queryText = "SELECT * FROM authors WHERE id = $1"; 
+//[id] = $1
+  // Use the pool object to send the query to the database
+  // passing the id as a parameter to prevent SQL injection
+ const result = await pool.query(queryText, [id]);
+   // The rows property of the result object contains the retrieved records
+  // If a author with the specified id exists, it will be the first element in the rows array
+  // If no author exists with the specified id, the rows array will be empty
+ return result.rows[0]|| null;
+  // The rows property of the result object contains the retrieved records
+  // If a book with the specified id exists, it will be the first element in the rows array
+  // If no book exists with the specified id, the rows array will be empty
+  //return result.rows[0] || null; 
+
 }
 
 export async function createAuthor(author) {
   // Query the database to create an author and return the newly created author
+  const first_name = author.first_name ;
+  const last_name = author.last_name;
+
+  const queryText = "INSERT INTO author (first_name, last_name) VALUES ($1, $2)";
+  
+
+  const result = await pool.query(queryText,[first_name,last_name]);
+  
+  return result.rows; 
 }
+
+/*
+ await pool.query(`
+      INSERT INTO authors (first_name, last_name)
+      VALUES   
+const data = req.body;
+  const author = await createAuthor(data);
+  res.status(201).json({ status: "success", data: author });*/
 
 export async function updateAuthorById(id, updates) {
   // Query the database to update an author and return the newly updated author or null
