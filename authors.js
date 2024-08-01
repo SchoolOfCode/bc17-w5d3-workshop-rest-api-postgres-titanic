@@ -42,16 +42,13 @@ export async function createAuthor(author) {
   return result.rows[0]; 
 }
 
-/*
- await pool.query(`
-      INSERT INTO authors (first_name, last_name)
-      VALUES   
-const data = req.body;
-  const author = await createAuthor(data);
-  res.status(201).json({ status: "success", data: author });*/
-
 export async function updateAuthorById(id, updates) {
   // Query the database to update an author and return the newly updated author or null
+  const queryText = "UPDATE authors SET first_name = $2, last_name = $3 WHERE id = $1 RETURNING *";
+
+  const result = await pool.query(queryText, [id, updates.first_name, updates.last_name]);
+
+  return result.rows[0];
 }
 
 export async function deleteAuthorById(id) {
