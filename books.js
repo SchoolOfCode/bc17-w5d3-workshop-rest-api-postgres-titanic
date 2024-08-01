@@ -41,3 +41,5 @@ export async function updateBookById(id, updates) {
 export async function deleteBookById(id) {
   // Query the database to delete a book and return the deleted book or null
 }
+
+console.log(await getBooks());

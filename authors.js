@@ -33,15 +33,13 @@ export async function getAuthorById(id) {
 
 export async function createAuthor(author) {
   // Query the database to create an author and return the newly created author
-  const first_name = author.first_name ;
-  const last_name = author.last_name;
 
-  const queryText = "INSERT INTO author (first_name, last_name) VALUES ($1, $2)";
+  const queryText = 
+    "INSERT INTO authors (first_name, last_name) VALUES ($1, $2) RETURNING *";
   
-
-  const result = await pool.query(queryText,[first_name,last_name]);
+  const result = await pool.query(queryText,[author.first_name, author.last_name]);
   
-  return result.rows; 
+  return result.rows[0]; 
 }
 
 /*
@@ -59,3 +57,4 @@ export async function updateAuthorById(id, updates) {
 export async function deleteAuthorById(id) {
   // Query the database to delete an author and return the deleted author or null
 }
+
